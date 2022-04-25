@@ -392,7 +392,7 @@
 
         var menuButton = this._menuButton =
           L.DomUtil.create('a', 'leaflet-popup-menu-button');
-        this._container.insertBefore(menuButton, this._closeButton);
+        this._container.insertBefore(menuButton, this.closeButton);
         menuButton.href = '#menu';
         menuButton.innerHTML = '<span class="menu-icon"></span>';
         L.DomEvent.disableClickPropagation(menuButton);
@@ -413,7 +413,7 @@
     _onMenuButtonClick: function(evt) {
       L.DomEvent.preventDefault(evt);
       this._showMenu();
-      this._close();
+      this.close();
     },
 
     /**
@@ -503,7 +503,7 @@
     _onEditClick: function(evt) {
       L.DomEvent.preventDefault(evt);
       this._map.fire('bookmark:edit', { data: this._bookmark });
-      this._close();
+      this.close();
     },
 
     /**
@@ -513,7 +513,7 @@
     _onRemoveClick: function(evt) {
       L.DomEvent.preventDefault(evt);
       this._map.fire('bookmark:remove', { data: this._bookmark });
-      this._close();
+      this.close();
     },
 
     /**
@@ -523,7 +523,7 @@
     _onCancelClick: function(evt) {
       L.DomEvent.preventDefault(evt);
       this._map.fire('bookmark:show', { data: this._bookmark });
-      this._close();
+      this.close();
     },
 
     /**
@@ -568,7 +568,7 @@
         var bookmark = L.Util.extend({}, this._bookmark, this._getBookmarkData());
         var map = this._map;
 
-        this._close();
+        this.close();
         if (this.options.mode === modes.CREATE) {
           map.fire('bookmark:add', { data: bookmark });
         } else {
@@ -931,7 +931,7 @@
         .off('bookmark:remove', this._onBookmarkRemove, this)
         .off('resize', this._initLayout, this);
 
-      if (this._marker) { this._marker._popup_._close(); }
+      if (this._marker) { this._marker._popup_.close(); }
 
       if (this.options.addNewOption) {
         L.DomEvent.off(this._container.querySelector('.' +
@@ -1220,7 +1220,7 @@
      * @param  {Object} evt
      */
     _onBookmarkAddStart: function(evt) {
-      if (this._marker) { this._popup._close(); }
+      if (this._marker) { this._popup.close(); }
 
       this._marker = new L.Marker(evt.latlng, {
         icon: this.options.icon || new L.Icon.Default(),
@@ -1393,7 +1393,7 @@
       return function (evt) {
         if (evt.data.id === bookmark.id) {
           marker.clearAllEventListeners();
-          if (marker._popup_) { marker._popup_._close(); }
+          if (marker._popup_) { marker._popup_.close(); }
           this.removeLayer(marker);
         }
       };
@@ -1425,7 +1425,7 @@
      * @param  {Object} bookmark
      */
     _showBookmark: function(bookmark) {
-      if (this._marker) { this._marker._popup_._close(); }
+      if (this._marker) { this._marker._popup_.close(); }
       var coords = L.latLng(bookmark.latlng);
       var marker = this._createMarker(coords, bookmark);
       var popup = new L.Control.Bookmarks.FormPopup(
